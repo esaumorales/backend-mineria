@@ -22,3 +22,8 @@ def predict(data: PredictRequest):
     X = np.array([data.features])
     pred = model.predict(X)
     return {"prediction": float(pred[0])}
+
+# ===== Endpoint de salud =====
+@app.get("/")
+def home():
+    return {"status": "ok", "message": "API funcionando"}
