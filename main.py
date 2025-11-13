@@ -7,7 +7,7 @@ import numpy as np
 app = FastAPI()
 
 # ===== Cargar modelo =====
-with open("modelmodelo_xgb_price.pkl", "rb") as f:
+with open("modelo_xgb_price.pkl", "rb") as f:
     model = pickle.load(f)
 
 
