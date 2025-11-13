@@ -3,29 +3,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pickle
 import numpy as np
-import os
 
 app = FastAPI()
 
+# ========== CORS FIX PARA RAILWAY ==========
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],             # Permite todo
+    allow_origin_regex=".*",         # <--- FIX IMPORTANTE PARA RAILWAY
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],             # Permite OPTIONS, GET, POST, etc.
+    allow_headers=["*"],             # Permite Authorization, Content-Type, etc.
+    expose_headers=["*"],            # Expone headers en respuesta
 )
 
-print("🔍 Iniciando servidor...")
-
-print("📂 Archivos presentes en el contenedor:", os.listdir("."))
-
-try:
-    print("🔍 Intentando cargar modelo...")
-    with open("modelo_xgb_price.pkl", "rb") as f:
-        model = pickle.load(f)
-    print("✅ Modelo cargado correctamente")
-except Exception as e:
-    print("❌ ERROR cargando el modelo:", str(e))
+# ========== Cargar modelo ==========
+with open("modelo_xgb_price.pkl", "rb") as f:
+    model = pickle.load(f)
 
 class PredictRequest(BaseModel):
     features: list
